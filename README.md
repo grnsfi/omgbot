@@ -1,2 +1,2 @@
-# omgbot
+# OMGbot
 Old Man Games Bot
