@@ -1,0 +1,11 @@
+{
+  "paths":
+	{
+		"db":            "databases"
+	},
+	"activity":
+	{
+		"text":				   ["Games", "Movies"],
+		"number":			   [0,3]
+	}
+}
