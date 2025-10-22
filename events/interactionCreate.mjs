@@ -85,7 +85,7 @@ export default {
 			}
 		} catch (error) {
 
-			console.error('Error in interactionCreate.js:[Execute]');
+			console.error('Error in interactionCreate.mjs:[Execute]');
 			console.error(error);
 
 			if (interaction.replied || interaction.deferred) {
@@ -101,3 +101,4 @@ export default {
 };
 //
 //--End-Of-Code------------------------------------------------------------------------------------------------------//
+
