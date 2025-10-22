@@ -5,9 +5,9 @@
 //
 //  Version: v1.0 [STABLE]
 //
-//  Last updated: 21.10.2025
+//  Last updated: 22.10.2025
 //
-//  Written / Tested using Node.js version v22.20.0
+//  Written using Node.js version v22.20.0 and ES Modules
 //
 //*********************************************************************************************************************
 //--Needed-Packages--------------------------------------------------------------------------------------------------//
@@ -21,28 +21,21 @@ console.clear();
 //
 //--Dependencies-and-Variables---------------------------------------------------------------------------------------//
 //
-const {
+import {
 
 	REST,
 	Client,
 	Events,
 	Routes,
-	Collection
+	Collection 
 
-} = require('discord.js');
+} from 'discord.js';
 
-const {
+import fs from 'node:fs';
+import Loader from './loader.mjs';
+import app from './configs/app.json' with { type: 'json' };
 
-    app,
-	rebuild
-	
-} = require('./configs/app');
-
-const fs = require('node:fs');
-const path = require('node:path');
-const Loader = require('./loader').Loader;
-
-require('log-timestamp');
+import 'log-timestamp';
 //
 //--Client-&-Rest----------------------------------------------------------------------------------------------------//
 //
@@ -51,22 +44,23 @@ const rest   = new REST().setToken(app.token);
 //
 //--Deploy-Commands--------------------------------------------------------------------------------------------------//
 //
-const  commands = [];
+const commands = [];
+
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, 'commands');  
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.mjs'));
 
 for (const file of commandFiles) {
 	
-	const filePath = path.join(commandsPath, file);
-	const command  = require(filePath);
-	
+	const data = await import('./commands/'+file);
+	const command = data.default; 
+
 	if ('data' in command && 'execute' in command) {
 
 		client.commands.set(command.data.name, command);
+		
 		commands.push(command.data.toJSON());
-	} 
+	}
 	else {
 
 		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
@@ -76,7 +70,7 @@ for (const file of commandFiles) {
 
 	try {
 
-		if (rebuild.cmd) {
+		if (app.rebuild.cmd) {
 
 			// Flush global commands
 			await rest.put(Routes.applicationCommands(app.clientId), { body: [] })
@@ -87,7 +81,7 @@ for (const file of commandFiles) {
 			await rest.put(Routes.applicationGuildCommands(app.clientId, app.guildId), { body: [] })
 				.then(() => console.log('Successfully flushed all guild commands.'))
 				.catch(console.error);
-		};
+		}
 		console.log(`Started refreshing ${commands.length} application commands.`);
 
 		const data = await rest.put(Routes.applicationCommands(app.clientId), { body: commands });
@@ -103,13 +97,12 @@ for (const file of commandFiles) {
 //
 //--Deploy-Events----------------------------------------------------------------------------------------------------//
 //
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.mjs'));
 
 for (const file of eventFiles) {
 
-	const filePath = path.join(eventsPath, file);
-	const event    = require(filePath);
+	const data  = await import('./events/'+file); 
+	const event = data.default;
 	
 	if (event.once) {
 
