@@ -5,7 +5,7 @@
 //
 //  Version: [STABLE]
 //
-// 	Last updated: 21.10.2025
+// 	Last updated: 22.10.2025
 //
 //*********************************************************************************************************************
 //--Needed-Packages--------------------------------------------------------------------------------------------------//
@@ -14,14 +14,14 @@
 //
 //--Dependencies-and-Variables---------------------------------------------------------------------------------------//
 //
-const { 
+import { 
 
     MessageFlags,
 	SlashCommandBuilder
 
-} = require('discord.js');
+} from 'discord.js';
 
-const wait = require('timers/promises').setTimeout;
+import { scheduler } from 'node:timers/promises';
 //
 //--Common-Variables-------------------------------------------------------------------------------------------------//
 //
@@ -29,7 +29,7 @@ const errormsg = '**OMGZOMG!**\n_An unknown error occurred while executing the c
 //
 //--Execute----------------------------------------------------------------------------------------------------------//
 //
-module.exports = {
+export default {
 	
 	data: new SlashCommandBuilder()
 		.setName('bot_status')
@@ -44,7 +44,7 @@ module.exports = {
 
 			await interaction.reply({ content: replymsg, flags: MessageFlags.Ephemeral });
 
-			await wait(7500);
+			await scheduler.wait(7500);
 			await interaction.deleteReply();
 		
 		} catch (error) {
