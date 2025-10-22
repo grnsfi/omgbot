@@ -90,7 +90,7 @@ for (const file of commandFiles) {
 
 	} catch (error) {
 
-		console.error('Error in index.js:[REST]');
+		console.error('Error in index.mjs:[REST]');
 		console.error(error);
 	}
 })();
@@ -129,7 +129,7 @@ client.once(Events.ClientReady, async bot => {
 	
 	} catch (error) {
 		
-		console.error('Error in index.js:[ClientReady]');
+		console.error('Error in index.mjs:[ClientReady]');
 		console.error(error);
 	}
 });
@@ -152,3 +152,4 @@ process.on('unhandledRejection', (error) => {
 });
 //
 //--End-Of-Code------------------------------------------------------------------------------------------------------//
+
