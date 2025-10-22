@@ -5,7 +5,7 @@
 //
 //  Version: [STABLE]
 //
-//  Last updated: 21.10.2025
+//  Last updated: 22.10.2025
 //
 //*********************************************************************************************************************
 //--Needed-Packages--------------------------------------------------------------------------------------------------//
@@ -14,12 +14,12 @@
 //
 //--Dependencies-and-Variables---------------------------------------------------------------------------------------//
 //
-const {	
+import {	
 	
 	Events,
 	MessageFlags 
 
-} = require('discord.js');
+} from 'discord.js';
 //
 //--Common-Variables-------------------------------------------------------------------------------------------------//
 //
@@ -27,7 +27,7 @@ const errormsg = '**OMGZOMG!**\n_An unknown error occurred while executing the c
 //
 //--Execute----------------------------------------------------------------------------------------------------------//
 //
-module.exports = {
+export default {
 	
 	name: Events.InteractionCreate,
 	async execute(interaction) {
@@ -79,7 +79,7 @@ module.exports = {
 				}
 				else {
 					
-					console.error('No interaction matching the command was found.');
+					console.error('No interaction matching command was found.');
 					return;
 				}
 			}
