@@ -1,22 +1,14 @@
 {
-	"app":
-    {
-		"clientId":		"",
-		"guildId": 		"",
-		"token":		"",
-		"options": 
-		{
-			"shards": 	"auto",
-			"intents": 	 1
-		}
-	},
-    "rebuild":
+	"clientId":		"",
+	"guildId": 		"",
+	"token":		"",
+	"options": 
 	{
-		"cmd":	        false
+		"shards": 	"auto",
+		"intents": 	 1
 	},
-	"activity":
+	"rebuild":
 	{
-		"text":			["Games", "Movies"],
-		"number":		[0,3]
+		"cmd":		false
 	}
 }
