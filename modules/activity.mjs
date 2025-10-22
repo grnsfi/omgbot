@@ -26,7 +26,7 @@ async function Activity(guild) {
 	try {
 
 		// Change activity status every 30 minutes
-		const rotate = new Cron('*/30 * * * * *', () => {
+		const rotate = new Cron('*/30 * * * *', () => {
 
 			ChangeBotActivity(guild);
 		});
@@ -101,3 +101,4 @@ async function SetBotActivity(guild) {
 export default Activity;
 //
 //--End-Of-Code------------------------------------------------------------------------------------------------------//
+
