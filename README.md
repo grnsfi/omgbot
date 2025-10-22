@@ -1,2 +1,1 @@
-# OMGbot
-Old Man Games Bot
+# Old Man Games Bot aka OMGbot
