@@ -42,7 +42,7 @@ async function Activity(guild) {
 
 	} catch (error) {
                         
-        console.error('Error in activity.js:[Activity]');
+        console.error('Error in activity.mjs:[Activity]');
         console.error(error);
     }
 };
@@ -75,7 +75,7 @@ async function ChangeBotActivity(guild) {
 
 	} catch (error) {
 		
-		console.error('Error in activity.js:[ChangeBotActivity]');
+		console.error('Error in activity.mjs:[ChangeBotActivity]');
 		console.error(error);
 	}
 };
@@ -91,7 +91,7 @@ async function SetBotActivity(guild) {
 
 	} catch (error) {
 		
-		console.error('Error in activity.js:[SetBotActivity]');
+		console.error('Error in activity.mjs:[SetBotActivity]');
 		console.error(error);
 	}
 }
@@ -101,4 +101,5 @@ async function SetBotActivity(guild) {
 export default Activity;
 //
 //--End-Of-Code------------------------------------------------------------------------------------------------------//
+
 
