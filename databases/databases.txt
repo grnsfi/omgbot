@@ -1,2 +1,1 @@
 Folder needed for .sqlite databases created by the bot
-
