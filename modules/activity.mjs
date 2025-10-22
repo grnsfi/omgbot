@@ -5,7 +5,7 @@
 //
 //  Version: [STABLE]
 //
-//  Last updated: 21.10.2025
+//  Last updated: 22.10.2025
 //
 //*********************************************************************************************************************
 //--Needed-Packages--------------------------------------------------------------------------------------------------//
@@ -15,14 +15,9 @@
 //
 //--Dependencies-and-Variables---------------------------------------------------------------------------------------//
 //
-const cwd  = process.cwd();
-const Keyv = require('keyv').default;
-const Cron = require('croner').Cron;
-//
-//--Common-Variables-------------------------------------------------------------------------------------------------//
-//
-let activity = require(cwd+'/configs/app').activity;
-const cache  = new Keyv(`sqlite://${cwd}/databases/activity.sqlite`);
+import { Cron } from 'croner';
+import { activitydb } from './common/databases.mjs';
+import cfg from './common/configs.json' with { type: 'json' };
 //
 //--Activity---------------------------------------------------------------------------------------------------------//
 //
@@ -31,16 +26,14 @@ async function Activity(guild) {
 	try {
 
 		// Change activity status every 30 minutes
-		const rotate = new Cron('*/30 * * * *', () => {
+		const rotate = new Cron('*/30 * * * * *', () => {
 
-			activity = require(cwd+'/configs/app').activity;
-
-			ChangeBotActivity(activity, cache, guild);
+			ChangeBotActivity(guild);
 		});
 		
-		if (await cache.get('init')) {
+		if (await activitydb.get('init')) {
 			
-			SetBotActivity(activity, cache, guild);
+			SetBotActivity(guild);
 		}
 		else {
 
@@ -56,29 +49,29 @@ async function Activity(guild) {
 //
 //--Change-Bot-Activity----------------------------------------------------------------------------------------------//
 //
-async function ChangeBotActivity(activity, cache, guild) {
+async function ChangeBotActivity(guild) {
 
 	try {
 
-		if (!await cache.get('init')) {
-			 await cache.set('init', true);
-			 await cache.set('current', 0);
-			 await cache.set('max', activity.text.length - 1);
+		if (!await activitydb.get('init')) {
+			 await activitydb.set('init', true);
+			 await activitydb.set('current', 0);
+			 await activitydb.set('max', cfg.activity.text.length - 1);
 		}
 		else {
 
-			await cache.set('max', activity.text.length - 1);
+			await activitydb.set('max', cfg.activity.text.length - 1);
 		
-			if (await cache.get('current') < await cache.get('max')) {
+			if (await activitydb.get('current') < await activitydb.get('max')) {
 
-				await cache.set('current', await cache.get('current') + 1);
+				await activitydb.set('current', await activitydb.get('current') + 1);
 			} 
 			else {
 
-				await cache.set('current', 0); 
+				await activitydb.set('current', 0); 
 			}
 		}
-		SetBotActivity(activity, cache, guild);
+		SetBotActivity(guild);
 
 	} catch (error) {
 		
@@ -89,12 +82,12 @@ async function ChangeBotActivity(activity, cache, guild) {
 //
 //--Set-Bot-Activity-------------------------------------------------------------------------------------------------//
 //
-async function SetBotActivity(activity, cache, guild) {
+async function SetBotActivity(guild) {
 
 	try {
 
-		const current = await cache.get('current');
-		await guild.client.user.setActivity(activity.text[current], { type: activity.number[current] });
+		const current = await activitydb.get('current');
+		await guild.client.user.setActivity(cfg.activity.text[current], { type: cfg.activity.number[current] });
 
 	} catch (error) {
 		
@@ -105,6 +98,6 @@ async function SetBotActivity(activity, cache, guild) {
 //
 //--Export-----------------------------------------------------------------------------------------------------------//
 //
-module.exports = { Activity };
+export default Activity;
 //
 //--End-Of-Code------------------------------------------------------------------------------------------------------//
