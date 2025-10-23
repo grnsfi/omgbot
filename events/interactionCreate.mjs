@@ -79,8 +79,9 @@ export default {
 				}
 				else {
 					
-					console.error('No interaction matching command was found.');
-					return;
+					console.error('No command matching interaction found.');
+
+					await interaction.reply({ content: `**OMGZOMG!**\n_No command matching interaction found._`, flags: MessageFlags.Ephemeral });
 				}
 			}
 		} catch (error) {
@@ -101,4 +102,5 @@ export default {
 };
 //
 //--End-Of-Code------------------------------------------------------------------------------------------------------//
+
 
